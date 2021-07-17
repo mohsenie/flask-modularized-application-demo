@@ -1,6 +1,7 @@
 import module_loader.events
 import module_loader.base_module
 import module_event
+import tempfile
 
 
 class FileLogger(module_loader.base_module.BaseModule):
@@ -13,8 +14,12 @@ class FileLogger(module_loader.base_module.BaseModule):
         print('event_triggered captured by file logger :' + str(event))
         print('writing a log file')
 
-        with open("C:\\Users\\mohsen\Downloads\\request_logs.txt", "a") as myfile:
+        new_file, filename = tempfile.mkstemp()
+
+        with open(new_file, "a") as myfile:
             myfile.write(event_name + ' ' + str(event) + '\n')
+
+        print('writing ' + event + ' to ' + filename)
 
         # capture that event and trigger another one
         self.events.trigger_event(self, 'triggering print to condole event from file logger',
